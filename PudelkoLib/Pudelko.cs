@@ -51,7 +51,29 @@ namespace PudelkoLib
                 bConverted = b;
                 cConverted = c;
             }
-            return $"{aConverted.ToString(format)} x {bConverted.ToString(format)} x {cConverted.ToString(format)}";
+            double aFormated = 0, bFormated = 0, cFormated = 0;
+            if (format.ToUpper() == "M")
+            {
+                aFormated = aConverted;
+                bFormated = bConverted;
+                cFormated = cConverted;
+            }
+            else if ((format.ToUpper() == "CM"))
+            {
+                aFormated = aConverted * 100;
+                bFormated = bConverted * 100;
+                cFormated = cConverted * 100;
+            }
+            else if (format.ToUpper() == "MM")
+            {
+                aFormated = aConverted * 1000;
+                bFormated = bConverted * 1000;
+                cFormated = cConverted * 1000;
+            }
+            string result = aFormated.ToString() + format.ToString() + " x " + bFormated.ToString() + format.ToString() + " x " + cFormated.ToString() + format.ToString();
+            return result;
+
+
         }
 
     }

@@ -7,10 +7,10 @@ namespace PudelkoApp
     {
         static void Main(string[] args)
         {
-            Pudelko p = new Pudelko(1.0, 2.0, 3.0, UnitOfMeasureType.milimeters);
+            Pudelko p = new Pudelko(1.0, 1.0, 1.0, UnitOfMeasureType.milimeters);
             Console.WriteLine(p);
 
-            
+
             p.ToString();
         }
     }
