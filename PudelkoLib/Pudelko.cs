@@ -87,5 +87,9 @@ namespace PudelkoLib
             string result = $"{aFormated} {format} × {bFormated} {format} × {cFormated} {format}";
             return result;
         }
+        public double Objetosc
+        {
+            get { return Math.Round((a * b * c),9); }
+        }
     }
 }
