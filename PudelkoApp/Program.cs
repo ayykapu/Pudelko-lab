@@ -1,5 +1,6 @@
 ﻿using PudelkoLib;
 using System;
+using System.Globalization;
 
 namespace PudelkoApp
 {
@@ -7,11 +8,9 @@ namespace PudelkoApp
     {
         static void Main(string[] args)
         {
-            Pudelko p = new Pudelko(1.0, 1.0, 1.0, UnitOfMeasureType.milimeters);
-            Console.WriteLine(p);
+            Pudelko p = new Pudelko(100.0, 100.0, 100.0, UnitOfMeasureType.milimeters);
 
-
-            p.ToString();
+            Console.WriteLine(p.ToString("m", CultureInfo.InvariantCulture));
         }
     }
 }

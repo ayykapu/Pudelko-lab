@@ -25,13 +25,13 @@ namespace PudelkoLib
         public UnitOfMeasureType UnitOfMeasure
         { get { return unitOfMeasure; } }
 
-        public object UnitOfMeasureConversion { get; private set; }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
+            format = format.ToUpper();
             double aConverted = 0, bConverted = 0, cConverted = 0;
             if (string.IsNullOrEmpty(format))
-            { format = "m"; }
+            { format = "M"; }
 
             if (UnitOfMeasure == UnitOfMeasureType.milimeters)
             {
@@ -52,31 +52,26 @@ namespace PudelkoLib
                 cConverted = c;
             }
             double aFormated = 0, bFormated = 0, cFormated = 0;
-            if (format.ToUpper() == "M")
+            if (format == "M")
             {
                 aFormated = aConverted;
                 bFormated = bConverted;
                 cFormated = cConverted;
             }
-            else if ((format.ToUpper() == "CM"))
+            else if ((format == "CM"))
             {
                 aFormated = aConverted * 100;
                 bFormated = bConverted * 100;
                 cFormated = cConverted * 100;
             }
-            else if (format.ToUpper() == "MM")
+            else if (format == "MM")
             {
                 aFormated = aConverted * 1000;
                 bFormated = bConverted * 1000;
                 cFormated = cConverted * 1000;
             }
-            string result = aFormated.ToString() + format.ToString() + " x " + bFormated.ToString() + format.ToString() + " x " + cFormated.ToString() + format.ToString();
+            string result = aFormated.ToString("F3") + format.ToString() + " x " + bFormated.ToString("F3") + format.ToString() + " x " + cFormated.ToString("F3") + format.ToString();
             return result;
-
-
         }
-
     }
-
-    
 }
