@@ -8,9 +8,9 @@ namespace PudelkoApp
     {
         static void Main(string[] args)
         {
-            Pudelko p = new Pudelko(100.0, 100.0, 100.0, UnitOfMeasureType.milimeters);
+            Pudelko p = new Pudelko(2.5, 9.321, 0.1, UnitOfMeasureType.meter);
 
-            Console.WriteLine(p.ToString("m", CultureInfo.InvariantCulture));
+            Console.WriteLine(p.ToString("cm")); 
         }
     }
 }

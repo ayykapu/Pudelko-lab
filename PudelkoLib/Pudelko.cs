@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace PudelkoLib
 {
@@ -9,8 +10,15 @@ namespace PudelkoLib
         private readonly double c;
         private readonly UnitOfMeasureType unitOfMeasure;
 
-        public Pudelko(double a, double b, double c, UnitOfMeasureType unitOfMeasure)
+        public Pudelko(double a = 10, double b = 10, double c = 10, UnitOfMeasureType unitOfMeasure = UnitOfMeasureType.meter)
         {
+            if (((a < 0 || a > 10 || b < 0 || b > 10 || c < 0 || c > 10) && (unitOfMeasure == UnitOfMeasureType.meter))
+            || ((a < 0 || a > 1000 || b < 0 || b > 1000 || c < 0 || c > 1000) && (unitOfMeasure == UnitOfMeasureType.centimeter))
+            || ((a < 0 || a > 10000 || b < 0 || b > 10000 || c < 0 || c > 10000) && (unitOfMeasure == UnitOfMeasureType.milimeter)))        
+            {
+                throw new ArgumentOutOfRangeException("The box size is incorrect. Try different size.");
+            }
+
             this.a = a;
             this.b = b;
             this.c = c;
@@ -26,51 +34,57 @@ namespace PudelkoLib
         { get { return unitOfMeasure; } }
 
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string format, IFormatProvider formatProvider = null)
         {
-            format = format.ToUpper();
-            double aConverted = 0, bConverted = 0, cConverted = 0;
-            if (string.IsNullOrEmpty(format))
-            { format = "M"; }
 
-            if (UnitOfMeasure == UnitOfMeasureType.milimeters)
+
+            format = format.ToLower();
+            double aConverted = 0, bConverted = 0, cConverted = 0;
+
+            if (UnitOfMeasure == UnitOfMeasureType.milimeter)
             {
                 aConverted = a / 1000;
                 bConverted = b / 1000;
                 cConverted = c / 1000;
             }
-            else if (UnitOfMeasure == UnitOfMeasureType.centimeters)
+            else if (UnitOfMeasure == UnitOfMeasureType.centimeter)
             {
                 aConverted = a / 100;
                 bConverted = b / 100;
                 cConverted = c / 100;
             }
-            else if (UnitOfMeasure == UnitOfMeasureType.meters)
+            else if (UnitOfMeasure == UnitOfMeasureType.meter)
             {
                 aConverted = a;
                 bConverted = b;
                 cConverted = c;
             }
-            double aFormated = 0, bFormated = 0, cFormated = 0;
-            if (format == "M")
+            else
             {
-                aFormated = aConverted;
-                bFormated = bConverted;
-                cFormated = cConverted;
+                throw new FormatException("This format is not supported.");
             }
-            else if ((format == "CM"))
+
+            string aFormated = "", bFormated = "", cFormated = "";
+            if (format == "m" || format == "")
             {
-                aFormated = aConverted * 100;
-                bFormated = bConverted * 100;
-                cFormated = cConverted * 100;
+                format = "m";
+                aFormated = aConverted.ToString("F3");
+                bFormated = bConverted.ToString("F3");
+                cFormated = cConverted.ToString("F3");
             }
-            else if (format == "MM")
+            else if ((format == "cm"))
             {
-                aFormated = aConverted * 1000;
-                bFormated = bConverted * 1000;
-                cFormated = cConverted * 1000;
+                aFormated = (aConverted * 100).ToString("F1");
+                bFormated = (bConverted * 100).ToString("F1");
+                cFormated = (cConverted * 100).ToString("F1");
             }
-            string result = aFormated.ToString("F3") + format.ToString() + " x " + bFormated.ToString("F3") + format.ToString() + " x " + cFormated.ToString("F3") + format.ToString();
+            else if (format == "mm")
+            {
+                aFormated = (aConverted * 1000).ToString();
+                bFormated = (bConverted * 1000).ToString();
+                cFormated = (cConverted * 1000).ToString();
+            }
+            string result = $"{aFormated} {format} × {bFormated} {format} × {cFormated} {format}";
             return result;
         }
     }
