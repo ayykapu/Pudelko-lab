@@ -2,7 +2,7 @@
 
 namespace PudelkoLib
 {
-    public sealed class Pudelko
+    public sealed class Pudelko : IFormattable
     {
         private readonly double a;
         private readonly double b;
@@ -24,7 +24,37 @@ namespace PudelkoLib
         { get { return c; } }
         public UnitOfMeasureType UnitOfMeasure
         { get { return unitOfMeasure; } }
-            
-       
+
+        public object UnitOfMeasureConversion { get; private set; }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            double aConverted = 0, bConverted = 0, cConverted = 0;
+            if (string.IsNullOrEmpty(format))
+            { format = "m"; }
+
+            if (UnitOfMeasure == UnitOfMeasureType.milimeters)
+            {
+                aConverted = a / 1000;
+                bConverted = b / 1000;
+                cConverted = c / 1000;
+            }
+            else if (UnitOfMeasure == UnitOfMeasureType.centimeters)
+            {
+                aConverted = a / 100;
+                bConverted = b / 100;
+                cConverted = c / 100;
+            }
+            else if (UnitOfMeasure == UnitOfMeasureType.meters)
+            {
+                aConverted = a;
+                bConverted = b;
+                cConverted = c;
+            }
+            return $"{aConverted.ToString(format)} x {bConverted.ToString(format)} x {cConverted.ToString(format)}";
+        }
+
     }
+
+    
 }
