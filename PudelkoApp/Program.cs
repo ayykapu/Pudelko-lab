@@ -1,5 +1,6 @@
 ﻿using PudelkoLib;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace PudelkoApp
@@ -8,10 +9,11 @@ namespace PudelkoApp
     {
         static void Main(string[] args)
         {
-            Pudelko p = new Pudelko(2.5, 9.321, 0.1, UnitOfMeasureType.meter);
 
+            var p = new Pudelko(2.5, 9.321, 0.1, UnitOfMeasure.meter);
+            p.ToString(null);
             // Console.WriteLine(p.ToString("cm")); 
-            Console.WriteLine(p.Objetosc);
+            //  Console.WriteLine(p.Objetosc);
         }
     }
 }

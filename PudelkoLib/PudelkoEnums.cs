@@ -4,10 +4,10 @@ using System.Text;
 
 namespace PudelkoLib
 {
-    public enum UnitOfMeasureType
+    public enum UnitOfMeasure
     {
-        milimeter,
-        centimeter,
-        meter
+       milimeter,
+       centimeter,
+       meter
     }
 }

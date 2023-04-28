@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO.Enumeration;
 
 namespace PudelkoLib
 {
@@ -8,21 +9,51 @@ namespace PudelkoLib
         private readonly double a;
         private readonly double b;
         private readonly double c;
-        private readonly UnitOfMeasureType unitOfMeasure;
+        private readonly UnitOfMeasure unit;
 
-        public Pudelko(double a = 10, double b = 10, double c = 10, UnitOfMeasureType unitOfMeasure = UnitOfMeasureType.meter)
+        public Pudelko(double a = 0.1, double b = 0.1, double c = 0.1, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
-            if (((a < 0 || a > 10 || b < 0 || b > 10 || c < 0 || c > 10) && (unitOfMeasure == UnitOfMeasureType.meter))
-            || ((a < 0 || a > 1000 || b < 0 || b > 1000 || c < 0 || c > 1000) && (unitOfMeasure == UnitOfMeasureType.centimeter))
-            || ((a < 0 || a > 10000 || b < 0 || b > 10000 || c < 0 || c > 10000) && (unitOfMeasure == UnitOfMeasureType.milimeter)))        
+            Assumptions(a, b, c, unit);
+
+
+            void Assumptions(double a, double b, double c, UnitOfMeasure unit)
             {
-                throw new ArgumentOutOfRangeException("The box size is incorrect. Try different size.");
+                if (unit == UnitOfMeasure.meter)
+                {
+                    if (a == 0.1 && b == 0.1 && c == 0.1) { }
+                    else if ((a < 0.1 || a > 10 || b < 0.1 || b > 10 || c < 0.1 || c > 10))
+                    {
+                        throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException");
+                    }
+                }
+                else if (unit == UnitOfMeasure.centimeter)
+                {
+                    if (a == 0.1 && b == 0.1 && c == 0.1) { }
+                    if (a < 0 || a > 10000 || b < 0 || b > 10000 || 0 < 1 || c > 10000)
+                    {
+                        throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException");
+                    }
+                }
+                else if (unit == UnitOfMeasure.milimeter)
+                {
+                    if (a < 0 || a > 10000 || b < 0 || b > 10000 || 0 < 1 || c > 10000)
+                    {
+                        throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException");
+                    }
+                }
+
+
             }
 
-            this.a = a;
-            this.b = b;
-            this.c = c;
-            this.unitOfMeasure = unitOfMeasure;
+            if (unit == UnitOfMeasure.centimeter)
+            {
+                a *= 0.01;
+            }
+
+            this.a = a == default ? 0.1 : a;
+            this.b = b == default ? 0.1 : b;
+            this.c = c == default ? 0.1 : c;
+            this.unit = unit == default ? UnitOfMeasure.meter : unit;
         }
         public double A
         { get { return a; } }
@@ -30,30 +61,37 @@ namespace PudelkoLib
         { get { return b; } }
         public double C
         { get { return c; } }
-        public UnitOfMeasureType UnitOfMeasure
-        { get { return unitOfMeasure; } }
+        public UnitOfMeasure Unit
+        { get { return unit; } }
 
-
-        public string ToString(string format, IFormatProvider formatProvider = null)
+        public string ToString(string format = "m", IFormatProvider formatProvider = null)
         {
-
+            if (format == null)
+            {
+                format = "m";
+            }
+            else if (format != "mm" && format != "cm" && format != "m")
+            {
+                throw new FormatException("FormatException");
+            }
 
             format = format.ToLower();
+
             double aConverted = 0, bConverted = 0, cConverted = 0;
 
-            if (UnitOfMeasure == UnitOfMeasureType.milimeter)
+            if (Unit == UnitOfMeasure.milimeter)
             {
                 aConverted = a / 1000;
                 bConverted = b / 1000;
                 cConverted = c / 1000;
             }
-            else if (UnitOfMeasure == UnitOfMeasureType.centimeter)
+            else if (Unit == UnitOfMeasure.centimeter)
             {
                 aConverted = a / 100;
                 bConverted = b / 100;
                 cConverted = c / 100;
             }
-            else if (UnitOfMeasure == UnitOfMeasureType.meter)
+            else if (Unit == UnitOfMeasure.meter)
             {
                 aConverted = a;
                 bConverted = b;
@@ -63,6 +101,7 @@ namespace PudelkoLib
             {
                 throw new FormatException("This format is not supported.");
             }
+            
 
             string aFormated = "", bFormated = "", cFormated = "";
             if (format == "m" || format == "")
@@ -90,6 +129,10 @@ namespace PudelkoLib
         public double Objetosc
         {
             get { return Math.Round((a * b * c),9); }
+        }
+        public double Pole
+        {
+            get { return Math.Round((a * b * 2 + a * c * 2 + b * c * 2), 6); }
         }
     }
 }

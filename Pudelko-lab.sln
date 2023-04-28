@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PudelkoLib", "PudelkoLib\PudelkoLib.csproj", "{F5EB55AA-A114-4E48-9644-19DAA961D4B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PudelkoLib", "PudelkoLib\PudelkoLib.csproj", "{F5EB55AA-A114-4E48-9644-19DAA961D4B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PudelkoApp", "PudelkoApp\PudelkoApp.csproj", "{C03AA94D-E013-4BCC-B203-499BE6AAF826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PudelkoApp", "PudelkoApp\PudelkoApp.csproj", "{C03AA94D-E013-4BCC-B203-499BE6AAF826}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PudelkoUnitTest", "PudelkoUnitTest\PudelkoUnitTest.csproj", "{E4877550-C6B9-4925-ACF2-2C97467E70CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PudelkoUnitTests", "PudelkoUnitTests\PudelkoUnitTests.csproj", "{32CCC096-D05C-4D3C-96A1-E273CC83F6BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{C03AA94D-E013-4BCC-B203-499BE6AAF826}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C03AA94D-E013-4BCC-B203-499BE6AAF826}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C03AA94D-E013-4BCC-B203-499BE6AAF826}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4877550-C6B9-4925-ACF2-2C97467E70CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4877550-C6B9-4925-ACF2-2C97467E70CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4877550-C6B9-4925-ACF2-2C97467E70CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4877550-C6B9-4925-ACF2-2C97467E70CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32CCC096-D05C-4D3C-96A1-E273CC83F6BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32CCC096-D05C-4D3C-96A1-E273CC83F6BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32CCC096-D05C-4D3C-96A1-E273CC83F6BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32CCC096-D05C-4D3C-96A1-E273CC83F6BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
