@@ -15,59 +15,55 @@ namespace PudelkoLib
 
         public Pudelko(double a = 0.1, double b = 0.1, double c = 0.1, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
+                   
             if((b == 0.1 && c == 0.1)) // 1 param
             {
-                switch (unit)
-                {
-                    case UnitOfMeasure.meter:
-                        a = Math.Round(a, 3);
-                        break;
-                    case UnitOfMeasure.centimeter:
-                        a = Math.Round(a / 100, 2);
-                        break;
-                    case UnitOfMeasure.milimeter:
-                        a = Math.Round(a / 1000, 2);
-                        break;
-                }
+                    switch (unit)
+                    {
+                        case UnitOfMeasure.meter:
+                            a = Math.Round(a, 3);
+                            break;
+                        case UnitOfMeasure.centimeter:
+                            a = Math.Round(a / 100, 2);
+                            break;
+                        case UnitOfMeasure.milimeter:
+                            a = Math.Round(a / 1000, 2);
+                            break;
+                    }
             }
             else if (c == 0.1) //2 params
             {
-                switch (unit)
-                {
-                    case UnitOfMeasure.meter:
-                        a = Math.Floor(a * 1000) / 1000;
-                        b = Math.Floor(b * 1000) / 1000;
-                        break;
-                    case UnitOfMeasure.centimeter:
-                        a = Math.Floor(a * 10) / 1000;
-                        b = Math.Floor(b * 10) / 1000;
-                        break;
-                    case UnitOfMeasure.milimeter:
-                        a = Math.Floor(a) / 1000;
-                        b = Math.Floor(b) / 1000;
-                        break;
-                }
+                    switch (unit)
+                    {
+                        case UnitOfMeasure.meter:
+                            a = Math.Floor(a * 1000) / 1000;
+                            b = Math.Floor(b * 1000) / 1000;
+                            break;
+                        case UnitOfMeasure.centimeter:
+                            a = Math.Floor(a * 10) / 1000;
+                            b = Math.Floor(b * 10) / 1000;
+                            break;
+                        case UnitOfMeasure.milimeter:
+                            a = Math.Floor(a) / 1000;
+                            b = Math.Floor(b) / 1000;
+                            break;
+                    }  
             }
             else // 3 params
             {
-                switch (unit)
-                {
-                    case UnitOfMeasure.meter:
-                        a = a;
-                        b = b;
-                        c = c;
-                        break;
-                    case UnitOfMeasure.centimeter:
-                        a = (Math.Floor(a / 100 * 1000)) / 1000;
-                        b = (Math.Floor(b / 100 * 1000)) / 1000;
-                        c = (Math.Floor(c / 100 * 1000)) / 1000;
-                        break;
-                    case UnitOfMeasure.milimeter:
-                        a = (Math.Floor(a / 1000 * 1000)) / 1000;
-                        b = (Math.Floor(b / 1000 * 1000)) / 1000;
-                        c = (Math.Floor(c / 1000 * 1000)) / 1000;
-                        break;
-                }
+                    switch (unit)
+                    {
+                        case UnitOfMeasure.centimeter:
+                            a = (Math.Floor(a / 100 * 1000)) / 1000;
+                            b = (Math.Floor(b / 100 * 1000)) / 1000;
+                            c = (Math.Floor(c / 100 * 1000)) / 1000;
+                            break;
+                        case UnitOfMeasure.milimeter:
+                            a = (Math.Floor(a / 1000 * 1000)) / 1000;
+                            b = (Math.Floor(b / 1000 * 1000)) / 1000;
+                            c = (Math.Floor(c / 1000 * 1000)) / 1000;
+                            break;
+                    }
             }
 
 

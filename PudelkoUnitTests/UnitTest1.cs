@@ -355,7 +355,7 @@ namespace PudelkoLib
         [DataRow(1, 0)]
         [DataRow(0, 0)]
         [DataRow(0.1, 1)]
-        [DataRow(1, 0.1)]
+        [DataRow(1, 0.1)] //asdhuoaskjda
         [DataRow(0.1, 0.1)]
         [DataRow(10001, 1)]
         [DataRow(1, 10001)]
