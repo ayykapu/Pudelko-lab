@@ -123,7 +123,7 @@ namespace PudelkoLib
         }
 
 
-        public string ToString(string format = "m", IFormatProvider formatProvider = null)
+            public string ToString(string format = "m", IFormatProvider formatProvider = null)
         {
             if (format == null)
             {
