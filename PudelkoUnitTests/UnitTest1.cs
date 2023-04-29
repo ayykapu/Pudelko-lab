@@ -192,7 +192,7 @@ namespace PudelkoLib
             AssertPudelko(p, expectedA, expectedB: 0.1, expectedC: 0.1);
         }
 
-        // ---
+
 
         public static IEnumerable<object[]> DataSet1Meters_ArgumentOutOfRangeEx => new List<object[]>
         {
@@ -461,8 +461,8 @@ namespace PudelkoLib
         // ToDo
         #endregion
 
-        //#region Conversions =====================================
-        //[TestMethod]
+        //  #region Conversions =====================================
+        // [TestMethod]
         //public void ExplicitConversion_ToDoubleArray_AsMeters()
         //{
         //    var p = new Pudelko(1, 2.1, 3.231);
@@ -483,36 +483,36 @@ namespace PudelkoLib
         //    Assert.AreEqual((int)(p.C * 1000), c);
         //}
 
-        //#endregion
+        // #endregion
 
-        //#region Indexer, enumeration ============================
-        //[TestMethod]
-        //public void Indexer_ReadFrom()
-        //{
-        //    var p = new Pudelko(1, 2.1, 3.231);
-        //    Assert.AreEqual(p.A, p[0]);
-        //    Assert.AreEqual(p.B, p[1]);
-        //    Assert.AreEqual(p.C, p[2]);
-        //}
+        #region Indexer, enumeration ============================
+        [TestMethod]
+        public void Indexer_ReadFrom()
+        {
+            var p = new Pudelko(1, 2.1, 3.231);
+            Assert.AreEqual(p.A, p[0]);
+            Assert.AreEqual(p.B, p[1]);
+            Assert.AreEqual(p.C, p[2]);
+        }
 
-        //[TestMethod]
-        //public void ForEach_Test()
-        //{
-        //    var p = new Pudelko(1, 2.1, 3.231);
-        //    var tab = new[] { p.A, p.B, p.C };
-        //    int i = 0;
-        //    foreach (double x in p)
-        //    {
-        //        Assert.AreEqual(x, tab[i]);
-        //        i++;
-        //    }
-        //}
+        [TestMethod]
+        public void ForEach_Test()
+        {
+            var p = new Pudelko(1, 2.1, 3.231);
+            var tab = new[] { p.A, p.B, p.C };
+            int i = 0;
+            foreach (double x in p)
+            {
+                Assert.AreEqual(x, tab[i]);
+                i++;
+            }
+        }
 
-        //#endregion
+        #endregion
 
-        //#region Parsing =========================================
+        #region Parsing =========================================
 
-        //#endregion
+        #endregion
 
     }
 }

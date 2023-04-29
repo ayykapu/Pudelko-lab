@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO.Enumeration;
+using System.Runtime.InteropServices;
 
 namespace PudelkoLib
 {
-    public sealed class Pudelko : IFormattable
+    public sealed class Pudelko : IFormattable, IEquatable<Pudelko>
     {
         private readonly double a;
         private readonly double b;
@@ -13,48 +15,70 @@ namespace PudelkoLib
 
         public Pudelko(double a = 0.1, double b = 0.1, double c = 0.1, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
-            Assumptions(a, b, c, unit);
-
-
-            void Assumptions(double a, double b, double c, UnitOfMeasure unit)
+            if((b == 0.1 && c == 0.1)) // 1 param
             {
-                if (unit == UnitOfMeasure.meter)
+                switch (unit)
                 {
-                    if (a == 0.1 && b == 0.1 && c == 0.1) { }
-                    else if ((a < 0.1 || a > 10 || b < 0.1 || b > 10 || c < 0.1 || c > 10))
-                    {
-                        throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException");
-                    }
+                    case UnitOfMeasure.meter:
+                        a = Math.Round(a, 3);
+                        break;
+                    case UnitOfMeasure.centimeter:
+                        a = Math.Round(a / 100, 2);
+                        break;
+                    case UnitOfMeasure.milimeter:
+                        a = Math.Round(a / 1000, 2);
+                        break;
                 }
-                else if (unit == UnitOfMeasure.centimeter)
+            }
+            else if (c == 0.1) //2 params
+            {
+                switch (unit)
                 {
-                    if (a == 0.1 && b == 0.1 && c == 0.1) { }
-                    if (a < 0 || a > 10000 || b < 0 || b > 10000 || 0 < 1 || c > 10000)
-                    {
-                        throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException");
-                    }
+                    case UnitOfMeasure.meter:
+                        a = Math.Floor(a * 1000) / 1000;
+                        b = Math.Floor(b * 1000) / 1000;
+                        break;
+                    case UnitOfMeasure.centimeter:
+                        a = Math.Floor(a * 10) / 1000;
+                        b = Math.Floor(b * 10) / 1000;
+                        break;
+                    case UnitOfMeasure.milimeter:
+                        a = Math.Floor(a) / 1000;
+                        b = Math.Floor(b) / 1000;
+                        break;
                 }
-                else if (unit == UnitOfMeasure.milimeter)
+            }
+            else // 3 params
+            {
+                switch (unit)
                 {
-                    if (a < 0 || a > 10000 || b < 0 || b > 10000 || 0 < 1 || c > 10000)
-                    {
-                        throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException");
-                    }
+                    case UnitOfMeasure.meter:
+                        a = a;
+                        b = b;
+                        c = c;
+                        break;
+                    case UnitOfMeasure.centimeter:
+                        a = (Math.Floor(a / 100 * 1000)) / 1000;
+                        b = (Math.Floor(b / 100 * 1000)) / 1000;
+                        c = (Math.Floor(c / 100 * 1000)) / 1000;
+                        break;
+                    case UnitOfMeasure.milimeter:
+                        a = (Math.Floor(a / 1000 * 1000)) / 1000;
+                        b = (Math.Floor(b / 1000 * 1000)) / 1000;
+                        c = (Math.Floor(c / 1000 * 1000)) / 1000;
+                        break;
                 }
-
-
             }
 
-            if (unit == UnitOfMeasure.centimeter)
-            {
-                a *= 0.01;
-            }
+
+
 
             this.a = a == default ? 0.1 : a;
             this.b = b == default ? 0.1 : b;
             this.c = c == default ? 0.1 : c;
             this.unit = unit == default ? UnitOfMeasure.meter : unit;
         }
+
         public double A
         { get { return a; } }
         public double B
@@ -63,6 +87,7 @@ namespace PudelkoLib
         { get { return c; } }
         public UnitOfMeasure Unit
         { get { return unit; } }
+
 
         public string ToString(string format = "m", IFormatProvider formatProvider = null)
         {
@@ -81,27 +106,27 @@ namespace PudelkoLib
 
             if (Unit == UnitOfMeasure.milimeter)
             {
-                aConverted = a / 1000;
-                bConverted = b / 1000;
-                cConverted = c / 1000;
+                aConverted = A / 1000;
+                bConverted = B / 1000;
+                cConverted = C / 1000;
             }
             else if (Unit == UnitOfMeasure.centimeter)
             {
-                aConverted = a / 100;
-                bConverted = b / 100;
-                cConverted = c / 100;
+                aConverted = A / 100;
+                bConverted = B / 100;
+                cConverted = C / 100;
             }
             else if (Unit == UnitOfMeasure.meter)
             {
-                aConverted = a;
-                bConverted = b;
-                cConverted = c;
+                aConverted = A;
+                bConverted = B;
+                cConverted = C;
             }
             else
             {
                 throw new FormatException("This format is not supported.");
             }
-            
+
 
             string aFormated = "", bFormated = "", cFormated = "";
             if (format == "m" || format == "")
@@ -128,11 +153,94 @@ namespace PudelkoLib
         }
         public double Objetosc
         {
-            get { return Math.Round((a * b * c),9); }
+            get { return Math.Round((A * B * C), 9); }
         }
         public double Pole
         {
-            get { return Math.Round((a * b * 2 + a * c * 2 + b * c * 2), 6); }
+            get { return Math.Round((A * B * 2 + A * B * 2 + A * B * 2), 6); }
         }
+        public double this[int index]
+        {
+            get
+            {
+                return index switch
+                {
+                    0 => A,
+                    1 => B,
+                    2 => C,
+                };
+            }
+        }
+        public override bool Equals(object? obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public static bool operator ==(Pudelko? a, Pudelko? b)
+        {
+            if (a is null || b is null) return false;
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(Pudelko? a, Pudelko? b)
+        {
+            if (a is null || b is null) return false;
+            return !a.Equals(b);
+        }
+        public bool Equals(Pudelko? p)
+        {
+            if (p == null) return false;
+
+            double[] firstArray = new double[3];
+            double[] secondArray = new double[3];
+
+            firstArray[0] = A;
+            firstArray[1] = B;
+            firstArray[2] = C;
+            secondArray[0] = p.A;
+            secondArray[1] = p.B;
+            secondArray[2] = p.C;
+
+            Console.WriteLine(firstArray[0] + secondArray[0]);
+            Console.WriteLine(firstArray[1] + secondArray[1]);
+            Console.WriteLine(firstArray[2] + secondArray[2]);
+
+            Array.Sort(firstArray);
+            Array.Sort(secondArray);
+
+            if (firstArray[0] == secondArray[0] && firstArray[1] == secondArray[1] && firstArray[2] == secondArray[2]) return true;
+            else return false;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        public IEnumerator<double> GetEnumerator()
+        {
+            yield return A;
+            yield return B;
+            yield return C;
+        }
+        public static double ToMeters(double input, UnitOfMeasure unit)
+        {
+            if (unit == UnitOfMeasure.meter)
+            {
+                return Math.Round(input, 3);
+            }
+            else if (unit == UnitOfMeasure.milimeter)
+            {
+                if (input < 1) return 0;
+
+                return Math.Round(input / 1000, 0);
+            }
+            else if (unit == UnitOfMeasure.centimeter)
+            {
+                if (input < 0.1) return 0;
+
+                return Math.Round(input / 100, 1);
+            }
+            else throw new FormatException("FormatException");
+        }
+
     }
 }
