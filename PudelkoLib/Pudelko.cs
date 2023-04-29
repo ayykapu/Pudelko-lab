@@ -13,106 +13,6 @@ namespace PudelkoLib
         private readonly double c;
         private readonly UnitOfMeasure unit;
 
-        public Pudelko(double a = 0.1, double b = 0.1, double c = 0.1, UnitOfMeasure unit = UnitOfMeasure.meter)
-        {
-                   
-            if((b == 0.1 && c == 0.1)) // 1 param
-            {
-                    switch (unit)
-                    {
-                        case UnitOfMeasure.meter:
-                            if (a <= 0 || a > 10)
-                            { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                            else
-                            { a = Math.Round(a, 3); }
-                            break;
-                        case UnitOfMeasure.centimeter:               
-                        if (a < 0.1 || a > 1000)
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        else
-                        { a = Math.Round(a / 100, 2); }
-                        break;
-                        case UnitOfMeasure.milimeter:
-                        if (a < 1 || a > 10000)
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        else
-                        { a = Math.Round(a / 1000, 2); }
-                        break;
-                    }
-            }
-            else if (c == 0.1) //2 params
-            {
-                    switch (unit)
-                    {
-                        case UnitOfMeasure.meter:
-                        if (a < 0.1 || a > 10 || b < 0.1 || b > 10) 
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        else
-                        {
-                            a = Math.Floor(a * 1000) / 1000;
-                            b = Math.Floor(b * 1000) / 1000;
-                        }
-                        break;
-                        case UnitOfMeasure.centimeter:
-                        if (a < 0.1 || a > 1000 || b < 0.1 || b > 1000)
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        else
-                        {
-                            a = Math.Floor(a * 10) / 1000;
-                            b = Math.Floor(b * 10) / 1000;
-                        }
-                            break;
-                        case UnitOfMeasure.milimeter:
-                        if (a < 1 || a > 10000 || b < 1 || b > 10000)
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        else
-                        {
-                            a = Math.Floor(a) / 1000;
-                            b = Math.Floor(b) / 1000;
-                        }
-                            break;
-                    }  
-            }
-            else // 3 params
-            {
-                    switch (unit)
-                    {
-                        case UnitOfMeasure.meter:
-                        if (a < 0.1 || a > 10 || b < 0.1 || b > 10 || c < 0.1 || c > 10)
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        break;
-                        case UnitOfMeasure.centimeter:
-                        if (a < 0.1 || a > 1000 || b < 0.1 || b > 1000 || c < 0.1 || c > 1000)
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        else
-                        { 
-                            a = (Math.Floor(a / 100 * 1000)) / 1000;
-                            b = (Math.Floor(b / 100 * 1000)) / 1000;
-                            c = (Math.Floor(c / 100 * 1000)) / 1000;
-                        }
-                        break;
-                        case UnitOfMeasure.milimeter:
-                        if (a < 1 || a > 10000 || b < 1 || b > 10000 || c < 1 || c > 10000)
-                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
-                        else
-                        {
-                            a = (Math.Floor(a / 1000 * 1000)) / 1000;
-                            b = (Math.Floor(b / 1000 * 1000)) / 1000;
-                            c = (Math.Floor(c / 1000 * 1000)) / 1000;
-                        }
-                            break;
-                    }
-            }
-
-
-
-
-            this.a = a == default ? 0.1 : a;
-            this.b = b == default ? 0.1 : b;
-            this.c = c == default ? 0.1 : c;
-            this.unit = unit == default ? UnitOfMeasure.meter : unit;
-        }
-
         public double A
         { get { return a; } }
         public double B
@@ -121,6 +21,106 @@ namespace PudelkoLib
         { get { return c; } }
         public UnitOfMeasure Unit
         { get { return unit; } }
+
+        public Pudelko(double a = 0.1, double b = 0.1, double c = 0.1, UnitOfMeasure unit = UnitOfMeasure.meter)
+        {
+         
+            // budowac dla default
+            if (b == 0.1 && c == 0.1) // 1 param
+            {
+                switch (unit)
+                {
+                    case UnitOfMeasure.meter:
+                        if (a <= 0 || a > 10)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        { a = Math.Round(a, 3); }
+                        break;
+                    case UnitOfMeasure.centimeter:
+                        if (a < 0.1 || a > 1000)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        { a = Math.Round(a / 100, 2); }
+                        break;
+                    case UnitOfMeasure.milimeter:
+                        if (a <= 1 || a > 10000 )
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        { a = Math.Round(a / 1000, 2); }
+                        break;
+                }
+            }
+            else if (c == 0.1) //2 params
+            {
+                switch (unit)
+                {
+                    case UnitOfMeasure.meter:
+                        if (a < 0.1 || a > 10 || b < 0.1 || b > 10)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        {
+                            a = Math.Floor(a * 1000) / 1000;
+                            b = Math.Floor(b * 1000) / 1000;
+                        }
+                        break;
+                    case UnitOfMeasure.centimeter:
+                        if (a < 0.1 || a > 1000 || b < 0.1 || b > 1000)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        {
+                            a = Math.Floor(a * 10) / 1000;
+                            b = Math.Floor(b * 10) / 1000;
+                        }
+                        break;
+                    case UnitOfMeasure.milimeter:
+                        if (a <= 1 || a > 10000 || b < 1 || b > 10000)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        {
+                            a = Math.Floor(a) / 1000;
+                            b = Math.Floor(b) / 1000;
+                        }
+                        break;
+                }
+            }
+            else // 3 params
+            {
+                switch (unit)
+                {
+                    case UnitOfMeasure.meter:
+                        if (a < 0.1 || a > 10 || b < 0.1 || b > 10 || c < 0.1 || c > 10)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        break;
+                    case UnitOfMeasure.centimeter:
+                        if (a < 0.1 || a > 1000 || b < 0.1 || b > 1000 || c < 0.1 || c > 1000)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        {
+                            a = (Math.Floor(a / 100 * 1000)) / 1000;
+                            b = (Math.Floor(b / 100 * 1000)) / 1000;
+                            c = (Math.Floor(c / 100 * 1000)) / 1000;
+                        }
+                        break;
+                    case UnitOfMeasure.milimeter:
+                        if (a < 1 || a > 10000 || b < 1 || b > 10000 || c < 1 || c > 10000)
+                        { throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException"); }
+                        else
+                        {
+                            a = (Math.Floor(a / 1000 * 1000)) / 1000;
+                            b = (Math.Floor(b / 1000 * 1000)) / 1000;
+                            c = (Math.Floor(c / 1000 * 1000)) / 1000;
+                        }
+                        break;
+                }
+            }
+            
+
+            this.a = a == default ? 0.1 : a;
+            this.b = b == default ? 0.1 : b;
+            this.c = c == default ? 0.1 : c;
+            this.unit = unit == default ? UnitOfMeasure.meter : unit;
+
+        }
 
 
         public string ToString(string format = "m", IFormatProvider formatProvider = null)
