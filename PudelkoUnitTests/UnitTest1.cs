@@ -1,8 +1,9 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+ï»¿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Transactions;
 
 namespace PudelkoLib
 {
@@ -25,7 +26,7 @@ namespace PudelkoLib
 
     {
         private static double defaultSize = 0.1; // w metrach
-        private static double accuracy = 0.001; //dok³adnoœæ 3 miejsca po przecinku
+        private static double accuracy = 0.001; //dokÅ‚adnoÅ›Ä‡ 3 miejsca po przecinku
 
         private void AssertPudelko(Pudelko p, double expectedA, double expectedB, double expectedC)
         {
@@ -50,7 +51,7 @@ namespace PudelkoLib
         [DataRow(1.0, 2.543, 3.1,
                  1.0, 2.543, 3.1)]
         [DataRow(1.0001, 2.54387, 3.1005,
-                 1.0, 2.543, 3.1)] // dla metrów licz¹ siê 3 miejsca po przecinku
+                 1.0, 2.543, 3.1)] // dla metrÃ³w liczÄ… siÄ™ 3 miejsca po przecinku
         public void Constructor_3params_DefaultMeters(double a, double b, double c,
                                                       double expectedA, double expectedB, double expectedC)
         {
@@ -63,7 +64,7 @@ namespace PudelkoLib
         [DataRow(1.0, 2.543, 3.1,
                  1.0, 2.543, 3.1)]
         [DataRow(1.0001, 2.54387, 3.1005,
-                 1.0, 2.543, 3.1)] // dla metrów licz¹ siê 3 miejsca po przecinku
+                 1.0, 2.543, 3.1)] // dla metrÃ³w liczÄ… siÄ™ 3 miejsca po przecinku
         public void Constructor_3params_InMeters(double a, double b, double c,
                                                       double expectedA, double expectedB, double expectedC)
         {
@@ -76,7 +77,7 @@ namespace PudelkoLib
         [DataRow(100.0, 25.5, 3.1,
                  1.0, 0.255, 0.031)]
         [DataRow(100.0, 25.58, 3.13,
-                 1.0, 0.255, 0.031)] // dla centymertów liczy siê tylko 1 miejsce po przecinku
+                 1.0, 0.255, 0.031)] // dla centymertÃ³w liczy siÄ™ tylko 1 miejsce po przecinku
         public void Constructor_3params_InCentimeters(double a, double b, double c,
                                                       double expectedA, double expectedB, double expectedC)
         {
@@ -89,7 +90,7 @@ namespace PudelkoLib
         [DataRow(100, 255, 3,
                  0.1, 0.255, 0.003)]
         [DataRow(100.0, 25.58, 3.13,
-                 0.1, 0.025, 0.003)] // dla milimetrów nie licz¹ siê miejsca po przecinku
+                 0.1, 0.025, 0.003)] // dla milimetrÃ³w nie liczÄ… siÄ™ miejsca po przecinku
 
         public void Constructor_3params_InMilimeters(double a, double b, double c,
                                                      double expectedA, double expectedB, double expectedC)
@@ -421,16 +422,16 @@ namespace PudelkoLib
         public void ToString_Default_Culture_EN()
         {
             var p = new Pudelko(2.5, 9.321);
-            string expectedStringEN = "2.500 m × 9.321 m × 0.100 m";
+            string expectedStringEN = "2.500 m Ã— 9.321 m Ã— 0.100 m";
 
             Assert.AreEqual(expectedStringEN, p.ToString());
         }
 
         [DataTestMethod, TestCategory("String representation")]
-        [DataRow(null, 2.5, 9.321, 0.1, "2.500 m × 9.321 m × 0.100 m")]
-        [DataRow("m", 2.5, 9.321, 0.1, "2.500 m × 9.321 m × 0.100 m")]
-        [DataRow("cm", 2.5, 9.321, 0.1, "250.0 cm × 932.1 cm × 10.0 cm")]
-        [DataRow("mm", 2.5, 9.321, 0.1, "2500 mm × 9321 mm × 100 mm")]
+        [DataRow(null, 2.5, 9.321, 0.1, "2.500 m Ã— 9.321 m Ã— 0.100 m")]
+        [DataRow("m", 2.5, 9.321, 0.1, "2.500 m Ã— 9.321 m Ã— 0.100 m")]
+        [DataRow("cm", 2.5, 9.321, 0.1, "250.0 cm Ã— 932.1 cm Ã— 10.0 cm")]
+        [DataRow("mm", 2.5, 9.321, 0.1, "2500 mm Ã— 9321 mm Ã— 100 mm")]
         public void ToString_Formattable_Culture_EN(string format, double a, double b, double c, string expectedStringRepresentation)
         {
             var p = new Pudelko(a, b, c, unit: UnitOfMeasure.meter);
@@ -448,17 +449,88 @@ namespace PudelkoLib
         #endregion
 
 
-        #region Pole, Objêtoœæ ===================================
+        #region Pole, ObjÃªtoÅ“Ã¦ ===================================
         // ToDo
+        [DataTestMethod, TestCategory("Objetosc")]
+        [DataRow(1, 1, 1)]
+        [DataRow(1, 2, 5)]
+        [DataRow(5, 2, 1)]
+        [DataRow(5, 1, 3)]
+        [DataRow(5, 7, 3)]
+        public void Objetosc(double a, double b, double c)
+        {
+            Pudelko pudelko = new Pudelko(a, b, c, UnitOfMeasure.meter);
+            double expectedObjetosc = a*b*c;
+            Assert.AreEqual(expectedObjetosc, pudelko.Objetosc);
+        }
+
+        [DataTestMethod, TestCategory("Pole")]
+        [DataRow(1, 1, 1)]
+        [DataRow(1, 2, 5)]
+        [DataRow(5, 2, 1)]
+        [DataRow(5, 1, 3)]
+        [DataRow(5, 7, 3)]
+        public void Pole(double a, double b, double c)
+        {
+            Pudelko pudelko = new Pudelko(a, b, c, UnitOfMeasure.meter);
+            double expectedPole = (a * b * 2) + (a * c * 2) + (b * c * 2);
+            Assert.AreEqual(expectedPole, pudelko.Pole);
+        }
 
         #endregion
 
         #region Equals ===========================================
         // ToDo
+        [TestMethod]
+        public void EqualsSame()
+        {
+            var p1 = new Pudelko(1.0, 2.0, 3.0);
+            var p2 = new Pudelko(1.0, 2.0, 3.0);
+            bool result = p1.Equals(p2);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void EqualsDifferent()
+        {
+            var p1 = new Pudelko(1.0, 2.0, 3.0);
+            var p2 = new Pudelko(2.0, 2.0, 3.0);
+            bool result = p1.Equals(p2);
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void EqualsOrder()
+        {
+            var p1 = new Pudelko(1.0, 2.0, 3.0);
+            var p2 = new Pudelko(1.0, 3.0, 2.0);
+            bool result = p1.Equals(p2);
+            Assert.IsTrue(result);
+        }
+
         #endregion
 
         #region Operators overloading ===========================
         // ToDo
+
+        [TestMethod]
+        public void Same()
+        {
+            var pudelko1 = new Pudelko(2, 3, 4, UnitOfMeasure.meter);
+            var pudelko2 = new Pudelko(2, 3, 4, UnitOfMeasure.meter);
+            bool areEqual = (pudelko1 == pudelko2);
+            Assert.IsTrue(areEqual);
+        }
+
+        [TestMethod]
+        public void OrderChange()
+        {
+            var pudelko1 = new Pudelko(2, 3, 4, UnitOfMeasure.meter);
+            var pudelko2 = new Pudelko(1, 3, 4, UnitOfMeasure.meter);
+            bool areNotEqual = (pudelko1 != pudelko2);
+            Assert.IsTrue(areNotEqual);
+        }
+
         #endregion
 
         #region Conversions =====================================

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
+using PudelkoLib;
+using PudelkoApp;
 
 namespace PudelkoLib
 {
-   public static class CompressionExtention
-   {
+    public class ExtensionMethods
+    {
         public static Pudelko Kompresuj(Pudelko p)
         {
             if (p == null)
@@ -19,6 +18,6 @@ namespace PudelkoLib
 
             return new Pudelko(edge, edge, edge);
         }
-        
-   }
+
+    }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Globalization;
-using System.IO.Enumeration;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace PudelkoLib
@@ -161,7 +158,7 @@ namespace PudelkoLib
         }
         public double Objetosc
         {
-            get { return Math.Round(ToMeters(A, unit) * ToMeters(A, unit) * ToMeters(A, unit), 9); }
+            get { return Math.Round(ToMeters(A, unit) * ToMeters(B, unit) * ToMeters(C, unit), 9); }
         }
         public double Pole
         {
@@ -207,10 +204,6 @@ namespace PudelkoLib
             secondArray[0] = p.A;
             secondArray[1] = p.B;
             secondArray[2] = p.C;
-
-            Console.WriteLine(firstArray[0] + secondArray[0]);
-            Console.WriteLine(firstArray[1] + secondArray[1]);
-            Console.WriteLine(firstArray[2] + secondArray[2]);
 
             Array.Sort(firstArray);
             Array.Sort(secondArray);
