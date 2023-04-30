@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.IO.Enumeration;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace PudelkoLib
 {
@@ -260,10 +261,61 @@ namespace PudelkoLib
             double[] abcArray = new double[] {p.A, p.B, p.C};
             return abcArray;
         }
-        public static implicit operator Pudelko((int x, int y, int z) tuple)
+        public static implicit operator Pudelko((double a, double b, double c) tuple)
         {
-            return new Pudelko(tuple.x, tuple.y, tuple.z, unit: UnitOfMeasure.milimeter);
+            return new Pudelko(tuple.a, tuple.b, tuple.c, unit: UnitOfMeasure.milimeter);
         }
+        public static Pudelko Parse(string input = "")
+        {
+            if (input == "")
+            {
+                return new Pudelko();
+            }
 
+            Regex regex = new Regex(@"([\d.]+)\s*(\w+)\s*×\s*([\d.]+)\s*(\w+)\s*×\s*([\d.]+)\s*(\w+)");
+            Match match = regex.Match(input);
+
+            if (!match.Success)
+            {
+                throw new FormatException("FormatException");
+            }
+
+            double a = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+            double b = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+            double c = double.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture);
+
+            string unitA = match.Groups[2].Value;
+            string unitB = match.Groups[4].Value;
+            string unitC = match.Groups[6].Value;
+
+            if (unitA == "cm")
+            {
+                a = a * 100;
+            }
+            else if (unitA == "mm")
+            {
+                a = a / 1000;
+            }
+
+            if (unitB == "cm")
+            {
+                b = b * 100;
+            }
+            else if (unitB == "mm")
+            {
+                b = b / 1000;
+            }
+
+            if (unitC == "cm")
+            {
+                c = c * 100;
+            }
+            else if (unitC == "mm")
+            {
+                c = c / 1000;
+            }
+
+            return new Pudelko(a, b, c);
+        }
     }
 }
