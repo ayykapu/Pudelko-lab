@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.IO.Enumeration;
 using System.Runtime.InteropServices;
@@ -12,20 +13,16 @@ namespace PudelkoLib
         private readonly double b;
         private readonly double c;
         private readonly UnitOfMeasure unit;
-
-        public double A
-        { get { return a; } }
-        public double B
-        { get { return b; } }
-        public double C
-        { get { return c; } }
+        public double A => a;
+        public double B => b;
+        public double C => c;
         public UnitOfMeasure Unit
         { get { return unit; } }
 
         public Pudelko(double a = 0.1, double b = 0.1, double c = 0.1, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
          
-            // budowac dla default
+            
             if (b == 0.1 && c == 0.1) // 1 param
             {
                 switch (unit)
@@ -113,17 +110,17 @@ namespace PudelkoLib
                         break;
                 }
             }
-            
 
-            this.a = a == default ? 0.1 : a;
-            this.b = b == default ? 0.1 : b;
-            this.c = c == default ? 0.1 : c;
-            this.unit = unit == default ? UnitOfMeasure.meter : unit;
+
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.unit = unit;
 
         }
 
 
-            public string ToString(string format = "m", IFormatProvider formatProvider = null)
+        public string ToString(string format = "m", IFormatProvider? formatProvider = null)
         {
             if (format == null)
             {
@@ -136,58 +133,34 @@ namespace PudelkoLib
 
             format = format.ToLower();
 
-            double aConverted = 0, bConverted = 0, cConverted = 0;
-
-            if (Unit == UnitOfMeasure.milimeter)
-            {
-                aConverted = A / 1000;
-                bConverted = B / 1000;
-                cConverted = C / 1000;
-            }
-            else if (Unit == UnitOfMeasure.centimeter)
-            {
-                aConverted = A / 100;
-                bConverted = B / 100;
-                cConverted = C / 100;
-            }
-            else if (Unit == UnitOfMeasure.meter)
-            {
-                aConverted = A;
-                bConverted = B;
-                cConverted = C;
-            }
-            else
-            {
-                throw new FormatException("This format is not supported.");
-            }
 
 
             string aFormated = "", bFormated = "", cFormated = "";
             if (format == "m" || format == "")
             {
                 format = "m";
-                aFormated = aConverted.ToString("F3");
-                bFormated = bConverted.ToString("F3");
-                cFormated = cConverted.ToString("F3");
+                aFormated = a.ToString("F3");
+                bFormated = b.ToString("F3");
+                cFormated = c.ToString("F3");
             }
-            else if ((format == "cm"))
+            else if (format == "cm")
             {
-                aFormated = (aConverted * 100).ToString("F1");
-                bFormated = (bConverted * 100).ToString("F1");
-                cFormated = (cConverted * 100).ToString("F1");
+                aFormated = (a * 100).ToString("F1");
+                bFormated = (b * 100).ToString("F1");
+                cFormated = (c * 100).ToString("F1");
             }
             else if (format == "mm")
             {
-                aFormated = (aConverted * 1000).ToString();
-                bFormated = (bConverted * 1000).ToString();
-                cFormated = (cConverted * 1000).ToString();
+                aFormated = (a * 1000).ToString();
+                bFormated = (b * 1000).ToString();
+                cFormated = (c * 1000).ToString();
             }
             string result = $"{aFormated} {format} × {bFormated} {format} × {cFormated} {format}";
             return result;
         }
         public double Objetosc
-        {         
-            get { return Math.Round(ToMeters(A,unit) * ToMeters(A, unit) * ToMeters(A, unit), 9); }
+        {
+            get { return Math.Round(ToMeters(A, unit) * ToMeters(A, unit) * ToMeters(A, unit), 9); }
         }
         public double Pole
         {
@@ -202,6 +175,7 @@ namespace PudelkoLib
                     0 => A,
                     1 => B,
                     2 => C,
+                    _ => throw new NotImplementedException("NotImplementedException"),
                 };
             }
         }
@@ -209,13 +183,11 @@ namespace PudelkoLib
         {
             return base.Equals(obj);
         }
-
         public static bool operator ==(Pudelko? a, Pudelko? b)
         {
             if (a is null || b is null) return false;
             return a.Equals(b);
         }
-
         public static bool operator !=(Pudelko? a, Pudelko? b)
         {
             if (a is null || b is null) return false;
@@ -255,13 +227,21 @@ namespace PudelkoLib
             yield return B;
             yield return C;
         }
+        public static Pudelko operator +(Pudelko p1, Pudelko p2)
+        {
+            double a = Math.Max(p1.A, p2.A);
+            double b = Math.Max(p1.B, p2.B);
+            double c = Math.Max(p1.C, p2.C);
+
+            return new Pudelko(a, b, c);
+        }
         public static double ToMeters(double input, UnitOfMeasure unit)
         {
-            if(unit == UnitOfMeasure.meter)
+            if (unit == UnitOfMeasure.meter)
             {
                 return input;
             }
-            else if(unit == UnitOfMeasure.centimeter)
+            else if (unit == UnitOfMeasure.centimeter)
             {
                 return input / 100;
             }
@@ -271,9 +251,18 @@ namespace PudelkoLib
             }
             else
             {
-                throw new FormatException("FormatException");
+                throw new FormatException("FormatException"); 
             }
-                    
+
+        }
+        public static explicit operator double[](Pudelko p)
+        {
+            double[] abcArray = new double[] {p.A, p.B, p.C};
+            return abcArray;
+        }
+        public static implicit operator Pudelko((int x, int y, int z) tuple)
+        {
+            return new Pudelko(tuple.x, tuple.y, tuple.z, unit: UnitOfMeasure.milimeter);
         }
 
     }
